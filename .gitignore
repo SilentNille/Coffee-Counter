@@ -1,0 +1,38 @@
+# .gitignore
+# ----------
+# Verhindert, dass bestimmte Dateien zum Git-Repository hinzugefügt werden
+
+# Node.js-spezifische Dateien
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnpm-debug.log
+.npm
+
+# Umgebungsvariablen
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs/
+*.log
+
+# Betriebssystemdateien
+.DS_Store
+Thumbs.db
+
+# Builddateien
+/dist
+/build
+/out
+
+# IDE-spezifische Dateien (für verschiedene Entwicklungsumgebungen)
+.idea/
+.vscode/
+*.swp
+*.swo
+.vs/

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Desktop App</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Willkommen bei der Desktop App</h1>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Über diese App</h2>
+            <p>Dies ist eine mit Electron erstellte Desktop-Anwendung, die auf Node.js und Express basiert.</p>
+        </section>
+        
+        <section>
+            <h2>Funktionen</h2>
+            <div class="button-container">
+                <button class="action-button" data-action="refresh">Status aktualisieren</button>
+                <button class="action-button" data-action="settings">Einstellungen</button>
+            </div>
+        </section>
+        
+        <section id="status-section">
+            <!-- Hier wird der API-Status angezeigt -->
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Test Desktop App</p>
+    </footer>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>

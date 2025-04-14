@@ -1,0 +1,124 @@
+/**
+ * style.css
+ * ---------
+ * Diese Datei enthält die Styling-Informationen für die Desktop-Anwendung.
+ */
+
+/* Grundlegende Stile für die ganze Seite */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+/* Header-Stile */
+header {
+    background-color: #2c3e50;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #fff;
+}
+
+/* Hauptinhalt */
+main {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+/* Button-Container */
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+/* Button-Stile */
+.action-button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.action-button:hover {
+    background-color: #2980b9;
+}
+
+/* Status-Bereich */
+#api-status {
+    background-color: #f8f8f8;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+    border-left: 4px solid #ddd;
+}
+
+.status-online {
+    border-left-color: #2ecc71 !important;
+}
+
+.status-offline {
+    border-left-color: #e74c3c !important;
+}
+
+/* Listen */
+ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+code {
+    background-color: #f8f8f8;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: monospace;
+    border: 1px solid #ddd;
+}
+
+/* Footer-Stile */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    background-color: #f4f4f4;
+    border-top: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
