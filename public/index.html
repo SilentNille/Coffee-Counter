@@ -42,6 +42,13 @@
                 <div class="coffee-cup">
                     <div class="cup">
                         <div class="coffee">
+                            <!-- Coffee bubbles will be added here by JavaScript -->
+                            <div class="bubble"></div>
+                            <div class="bubble"></div>
+                            <div class="bubble"></div>
+                            <div class="bubble"></div>
+                            <div class="bubble"></div>
+                            
                             <div class="steam"></div>
                             <div class="steam"></div>
                             <div class="steam"></div>
@@ -110,6 +117,133 @@
                 </div>
             </div>
             
+            <!-- Kaffee-Einträge Verwaltung -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-list"></i>
+                    <h2 class="card-title">Kaffee-Einträge Verwalten</h2>
+                </div>
+                
+                <div class="entries-container">
+                    <div class="entries-filters">
+                        <label for="date-filter">Filter nach Datum:</label>
+                        <select id="date-filter" class="date-filter-select">
+                            <option value="all">Alle Einträge</option>
+                            <!-- Weitere Optionen werden per JavaScript gefüllt -->
+                        </select>
+                    </div>
+                    
+                    <div class="entries-list" id="coffee-entries-list">
+                        <!-- Einträge werden per JavaScript gefüllt -->
+                        <div class="no-entries-message">Keine Kaffee-Einträge gefunden.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Detaillierte Statistik -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie"></i>
+                    <h2 class="card-title">Detaillierte Statistiken</h2>
+                </div>
+                
+                <div class="detailed-stats-container">
+                    <!-- Tabs für Navigierung zwischen Allzeit und Monat -->
+                    <div class="stats-tabs">
+                        <button class="stats-tab-btn active" data-tab="all-time">All-Time Statistik</button>
+                        <button class="stats-tab-btn" data-tab="monthly">Monatliche Statistik</button>
+                    </div>
+                    
+                    <!-- All-Time Statistik -->
+                    <div class="stats-tab-content active" id="all-time-stats">
+                        <div class="stat-summary-grid">
+                            <div class="stat-summary-item">
+                                <div class="summary-value" id="alltime-count">0</div>
+                                <div class="summary-label">Gesamtanzahl Kaffees</div>
+                            </div>
+                            <div class="stat-summary-item">
+                                <div class="summary-value" id="alltime-days">0</div>
+                                <div class="summary-label">Erfasste Tage</div>
+                            </div>
+                            <div class="stat-summary-item">
+                                <div class="summary-value" id="alltime-avg-per-day">0</div>
+                                <div class="summary-label">Durchschnitt pro Tag</div>
+                            </div>
+                            <div class="stat-summary-item">
+                                <div class="summary-value" id="alltime-max-day">0</div>
+                                <div class="summary-label">Maximum an einem Tag</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-details-grid">
+                            <div class="stat-details-item">
+                                <div class="details-label">Erster Kaffee</div>
+                                <div class="details-value" id="alltime-first-date">--</div>
+                            </div>
+                            <div class="stat-details-item">
+                                <div class="details-label">Letzter Kaffee</div>
+                                <div class="details-value" id="alltime-last-date">--</div>
+                            </div>
+                            <div class="stat-details-item">
+                                <div class="details-label">Beliebteste Stunde</div>
+                                <div class="details-value" id="alltime-popular-hour">--</div>
+                            </div>
+                            <div class="stat-details-item">
+                                <div class="details-label">Durchschnittliches Intervall</div>
+                                <div class="details-value" id="alltime-avg-interval">--:--</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Trenner -->
+                        <div class="stat-divider"></div>
+                        
+                        <!-- Stundenverlauf-Chart -->
+                        <h3 class="stat-section-title">Verteilung nach Tageszeit</h3>
+                        <div class="chart-container">
+                            <canvas id="hour-distribution-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Monatliche Statistik -->
+                    <div class="stats-tab-content" id="monthly-stats">
+                        <div class="month-selector">
+                            <label for="month-select">Monat auswählen:</label>
+                            <select id="month-select" class="month-select">
+                                <!-- Optionen werden per JavaScript gefüllt -->
+                            </select>
+                        </div>
+                        
+                        <div class="stat-summary-grid">
+                            <div class="stat-summary-item">
+                                <div class="summary-value" id="month-count">0</div>
+                                <div class="summary-label">Kaffees im Monat</div>
+                            </div>
+                            <div class="stat-summary-item">
+                                <div class="summary-value" id="month-avg-per-day">0</div>
+                                <div class="summary-label">Durchschnitt pro Tag</div>
+                            </div>
+                            <div class="stat-summary-item">
+                                <div class="summary-value" id="month-active-day-count">0</div>
+                                <div class="summary-label">Maximum an einem Tag</div>
+                            </div>
+                            <div class="stat-summary-item">
+                                <div class="summary-value" id="month-avg-interval">--:--</div>
+                                <div class="summary-label">Durchsch. Intervall</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Trenner -->
+                        <div class="stat-divider"></div>
+                        
+                        <!-- Tagesverlauf-Chart -->
+                        <h3 class="stat-section-title">Verteilung nach Tagen</h3>
+                        <div class="chart-container">
+                            <canvas id="day-distribution-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Einstellungen -->
             <div class="card">
                 <div class="card-header">
@@ -134,6 +268,7 @@
         <!-- Fußzeile -->
         <div class="footer">
             &copy; 2025 Kaffee Tracker
+            <!-- Dancing bean will be added here by JavaScript -->
         </div>
     </div>
     

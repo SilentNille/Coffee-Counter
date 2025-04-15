@@ -16,6 +16,9 @@ let mainWindow;
 let coffeeService;
 
 function createWindow() {
+  // Erkennen des Betriebssystems für spezifische Anpassungen
+  const isWindows = process.platform === 'win32';
+  
   // Erstelle das Browser-Fenster mit abgerundeten Ecken und modernem Design
   mainWindow = new BrowserWindow({
     width: 900,
@@ -30,7 +33,12 @@ function createWindow() {
     transparent: true, // Transparenz für abgerundete Ecken
     backgroundColor: '#00000000', // Transparent background
     titleBarStyle: 'hidden',
-    icon: path.join(__dirname, 'public', 'assets', 'icons', 'coffee-icon.png')
+    icon: path.join(__dirname, 'public', 'assets', 'icons', 'coffee-icon.png'),
+    // Windows-spezifische Einstellungen für abgerundete Ecken
+    ...(isWindows && {
+      autoHideMenuBar: true,
+      roundedCorners: true
+    })
   });
 
   // Lade die index.html der App
@@ -101,6 +109,31 @@ function setupCoffeeTracking() {
   // Kaffee-Historie abrufen
   ipcMain.handle('get-coffee-history', (event, days) => {
     return coffeeService.getCoffeeHistory(days);
+  });
+  
+  // Alle-Zeit-Statistiken abrufen
+  ipcMain.handle('get-all-time-stats', () => {
+    return coffeeService.getAllTimeStats();
+  });
+  
+  // Monatsstatistiken abrufen
+  ipcMain.handle('get-month-stats', (event, year, month) => {
+    return coffeeService.getMonthStats(year, month);
+  });
+  
+  // Verfügbare Monate abrufen
+  ipcMain.handle('get-available-months', () => {
+    return coffeeService.getAvailableMonths();
+  });
+  
+  // Detaillierte Informationen zu allen Kaffee-Einträgen abrufen
+  ipcMain.handle('get-coffee-details', () => {
+    return coffeeService.getAllCoffees();
+  });
+  
+  // Kaffee-Eintrag entfernen
+  ipcMain.handle('remove-coffee', (event, coffeeId) => {
+    return coffeeService.removeCoffee(coffeeId);
   });
   
   // Einstellungen abrufen

@@ -14,7 +14,8 @@
     "package-mac": "electron-builder --mac",
     "package-linux": "electron-builder --linux",
     "package-win-dir": "electron-builder --win --dir",
-    "package-manual": "node package-app.js"
+    "package-manual": "node package-app.js",
+    "update-build-run": "npm update && npm run package-manual && npm run electron && electron-builder --win --dir"
   },
   "keywords": [
     "node",

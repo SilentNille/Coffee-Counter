@@ -77,11 +77,209 @@ class CoffeeService {
   }
 
   /**
+   * Entfernt einen Kaffee-Eintrag anhand seiner ID
+   * @param {string} coffeeId - Die ID des zu löschenden Kaffee-Eintrags
+   * @returns {boolean} - true, wenn der Eintrag gelöscht wurde, sonst false
+   */
+  removeCoffee(coffeeId) {
+    const beforeCount = this.db.get('coffees').size().value();
+    this.db.get('coffees').remove({ id: coffeeId }).write();
+    const afterCount = this.db.get('coffees').size().value();
+    
+    return beforeCount > afterCount;
+  }
+
+  /**
    * Gibt alle Kaffee-Einträge zurück
    * @returns {Array} - Liste aller Kaffee-Einträge
    */
   getAllCoffees() {
     return this.db.get('coffees').value();
+  }
+
+  /**
+   * Berechnet Statistiken für alle erfassten Kaffees
+   * @returns {Object} - Detaillierte all-time Statistiken
+   */
+  getAllTimeStats() {
+    const allCoffees = this.getAllCoffees();
+    
+    if (allCoffees.length === 0) {
+      return {
+        count: 0,
+        averagePerDay: 0,
+        firstDate: null,
+        lastDate: null,
+        totalDays: 0,
+        averageIntervalMs: 0,
+        popularHour: null,
+        maxInOneDay: 0
+      };
+    }
+    
+    // Nach Datum sortieren
+    allCoffees.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    
+    // Erster und letzter Kaffee
+    const firstCoffee = allCoffees[0];
+    const lastCoffee = allCoffees[allCoffees.length - 1];
+    
+    // Erstes und letztes Datum
+    const firstDate = new Date(firstCoffee.timestamp);
+    const lastDate = new Date(lastCoffee.timestamp);
+    
+    // Anzahl der Tage zwischen erstem und letztem Kaffee (+1 für inklusives Zählen)
+    const totalDaysMs = lastDate - firstDate;
+    const totalDays = Math.max(1, Math.ceil(totalDaysMs / (1000 * 60 * 60 * 24)));
+    
+    // Durchschnitt Kaffees pro Tag
+    const averagePerDay = allCoffees.length / totalDays;
+    
+    // Durchschnittliches Intervall
+    const intervals = allCoffees
+      .filter(coffee => coffee.intervalMs > 0)
+      .map(coffee => coffee.intervalMs);
+    
+    const averageIntervalMs = intervals.length > 0
+      ? intervals.reduce((sum, val) => sum + val, 0) / intervals.length
+      : 0;
+    
+    // Beliebteste Stunde finden (0-23)
+    const hourCounts = Array(24).fill(0);
+    allCoffees.forEach(coffee => {
+      const hour = new Date(coffee.timestamp).getHours();
+      hourCounts[hour]++;
+    });
+    
+    const popularHour = hourCounts.indexOf(Math.max(...hourCounts));
+    
+    // Maximale Anzahl Kaffees an einem Tag
+    const coffeesByDay = {};
+    allCoffees.forEach(coffee => {
+      if (!coffeesByDay[coffee.dayId]) {
+        coffeesByDay[coffee.dayId] = 0;
+      }
+      coffeesByDay[coffee.dayId]++;
+    });
+    
+    const maxInOneDay = Math.max(...Object.values(coffeesByDay));
+    
+    return {
+      count: allCoffees.length,
+      averagePerDay: averagePerDay,
+      firstDate: firstDate,
+      lastDate: lastDate,
+      totalDays: totalDays,
+      averageIntervalMs: averageIntervalMs,
+      popularHour: popularHour,
+      maxInOneDay: maxInOneDay
+    };
+  }
+  
+  /**
+   * Berechnet Statistiken für einen bestimmten Monat
+   * @param {number} year - Das Jahr
+   * @param {number} month - Der Monat (0-11)
+   * @returns {Object} - Die Statistiken für diesen Monat
+   */
+  getMonthStats(year = new Date().getFullYear(), month = new Date().getMonth()) {
+    // Alle Kaffees bekommen
+    const allCoffees = this.getAllCoffees();
+    
+    // Kaffees des angegebenen Monats filtern
+    const monthCoffees = allCoffees.filter(coffee => {
+      const date = new Date(coffee.timestamp);
+      return date.getFullYear() === year && date.getMonth() === month;
+    });
+    
+    if (monthCoffees.length === 0) {
+      return {
+        count: 0,
+        year,
+        month,
+        averagePerDay: 0,
+        averageIntervalMs: 0,
+        mostActiveDay: null,
+        mostActiveDayCount: 0,
+        dayDistribution: Array(31).fill(0)
+      };
+    }
+    
+    // Verteilung nach Tagen
+    const dayDistribution = Array(31).fill(0);
+    const dayCount = {}; // Hilfsobjekt zur Berechnung des aktivsten Tages
+    
+    monthCoffees.forEach(coffee => {
+      const day = new Date(coffee.timestamp).getDate() - 1; // 0-basiert machen
+      dayDistribution[day]++;
+      
+      const dayKey = new Date(coffee.timestamp).toISOString().split('T')[0];
+      dayCount[dayKey] = (dayCount[dayKey] || 0) + 1;
+    });
+    
+    // Aktivster Tag finden
+    let mostActiveDay = null;
+    let mostActiveDayCount = 0;
+    
+    for (const [dayKey, count] of Object.entries(dayCount)) {
+      if (count > mostActiveDayCount) {
+        mostActiveDay = dayKey;
+        mostActiveDayCount = count;
+      }
+    }
+    
+    // Durchschnitt pro Tag im Monat berechnen
+    // Anzahl der Tage im angegebenen Monat
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const averagePerDay = monthCoffees.length / daysInMonth;
+    
+    // Durchschnittliches Intervall
+    const intervals = monthCoffees
+      .filter(coffee => coffee.intervalMs > 0)
+      .map(coffee => coffee.intervalMs);
+    
+    const averageIntervalMs = intervals.length > 0
+      ? intervals.reduce((sum, val) => sum + val, 0) / intervals.length
+      : 0;
+    
+    return {
+      count: monthCoffees.length,
+      year,
+      month,
+      averagePerDay,
+      averageIntervalMs,
+      mostActiveDay,
+      mostActiveDayCount,
+      dayDistribution
+    };
+  }
+  
+  /**
+   * Gibt die verfügbaren Jahre und Monate zurück, für die Kaffee-Daten existieren
+   * @returns {Array} - Liste von Jahr/Monat-Objekten
+   */
+  getAvailableMonths() {
+    const allCoffees = this.getAllCoffees();
+    const monthsSet = new Set();
+    
+    allCoffees.forEach(coffee => {
+      const date = new Date(coffee.timestamp);
+      const yearMonth = `${date.getFullYear()}-${date.getMonth()}`;
+      monthsSet.add(yearMonth);
+    });
+    
+    const result = Array.from(monthsSet).map(yearMonth => {
+      const [year, month] = yearMonth.split('-').map(Number);
+      return { year, month };
+    });
+    
+    // Nach Datum sortieren (neueste zuerst)
+    result.sort((a, b) => {
+      if (a.year !== b.year) return b.year - a.year;
+      return b.month - a.month;
+    });
+    
+    return result;
   }
 
   /**

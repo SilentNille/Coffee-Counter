@@ -42,6 +42,38 @@ body {
   border-radius: var(--border-radius);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+  position: relative; /* Für absolute Positionierung des Hintergrunds */
+  
+  /* Spezifisch für Windows 10/11 Acryleffekt */
+  backdrop-filter: blur(10px);
+}
+
+/* Hintergrund-Effekte */
+.background-effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none; /* Ermöglicht Interaktion mit Elementen unter dem Hintergrund */
+  overflow: hidden;
+}
+
+.coffee-stain {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--coffee-medium) 0%, transparent 70%);
+  opacity: 0.05;
+  transform-origin: center;
+}
+
+/* Der Inhalt liegt über dem Hintergrund */
+.title-bar, .main-content, .footer {
+  position: relative;
+  z-index: 1;
 }
 
 /* Benutzerdefinierte Titelleiste */
@@ -162,6 +194,7 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  margin-top: 15px;
 }
 
 .coffee-button:hover {
@@ -227,6 +260,72 @@ body {
   bottom: 0;
 }
 
+/* Coffee bubbles animation */
+.bubble {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: bubble-rise 5s infinite ease-in;
+  opacity: 0;
+}
+
+.bubble:nth-child(1) {
+  width: 6px;
+  height: 6px;
+  left: 10px;
+  bottom: 5px;
+  animation-delay: 0.2s;
+}
+
+.bubble:nth-child(2) {
+  width: 4px;
+  height: 4px;
+  left: 20px;
+  bottom: 8px;
+  animation-delay: 1.5s;
+}
+
+.bubble:nth-child(3) {
+  width: 7px;
+  height: 7px;
+  left: 32px;
+  bottom: 10px;
+  animation-delay: 0.8s;
+}
+
+.bubble:nth-child(4) {
+  width: 5px;
+  height: 5px;
+  left: 15px;
+  bottom: 12px;
+  animation-delay: 2.2s;
+}
+
+.bubble:nth-child(5) {
+  width: 4px;
+  height: 4px;
+  left: 25px;
+  bottom: 15px;
+  animation-delay: 1.1s;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-35px) scale(0.8);
+    opacity: 0;
+  }
+}
+
 .steam {
   position: absolute;
   top: -15px;
@@ -239,33 +338,148 @@ body {
   animation: steam 2s infinite;
 }
 
-.steam:nth-child(1) {
-  left: 10px;
-  animation-delay: 0.3s;
+/* Flying coffee beans animation */
+.flying-bean {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  background-color: var(--coffee-dark);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  transform: rotate(45deg);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none; /* Make sure it doesn't interfere with clicks */
+  animation: fly-around 8s linear infinite;
 }
 
-.steam:nth-child(2) {
-  left: 30px;
-  animation-delay: 0.7s;
+.flying-bean::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 1px;
+  background-color: var(--coffee-medium);
+  top: 5px;
+  left: 5px;
 }
 
-.steam:nth-child(3) {
-  left: 20px;
-  animation-delay: 1s;
-}
-
-@keyframes steam {
+@keyframes fly-around {
   0% {
-    transform: translateY(0) scale(1);
     opacity: 0;
+    top: 50%;
+    left: -10px;
+    transform: rotate(45deg) scale(0.5);
   }
-  20% {
+  10% {
     opacity: 0.8;
+    transform: rotate(90deg) scale(0.8);
+  }
+  40% {
+    transform: rotate(180deg) scale(1);
+  }
+  70% {
+    transform: rotate(270deg) scale(0.8);
+  }
+  90% {
+    opacity: 0.8;
+    transform: rotate(350deg) scale(0.7);
   }
   100% {
-    transform: translateY(-15px) scale(1.5);
     opacity: 0;
+    top: 30%;
+    left: 110%;
+    transform: rotate(360deg) scale(0.5);
   }
+}
+
+/* Little dancing coffee bean */
+.dancing-bean {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 15px;
+  height: 10px;
+  background-color: var(--coffee-dark);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  transform-origin: center bottom;
+  animation: dance 4s infinite;
+}
+
+.dancing-bean::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 1px;
+  background-color: var(--coffee-medium);
+  top: 5px;
+  left: 5px;
+}
+
+@keyframes dance {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(15deg);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  30% {
+    transform: rotate(15deg);
+  }
+  40% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: scaleX(1.1) rotate(5deg);
+  }
+  60% {
+    transform: scaleY(1.1) rotate(-5deg);
+  }
+  70% {
+    transform: rotate(10deg);
+  }
+  80% {
+    transform: rotate(-10deg);
+  }
+  90% {
+    transform: rotate(5deg);
+  }
+}
+
+/* Heartbeat effect for timer */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.1);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.08);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+.timer-heartbeat {
+  animation: heartbeat 2s infinite;
+}
+
+/* Fixed width for buttons to prevent resizing during animation */
+#start-btn, #coffee-btn {
+  min-width: 165px;
+  justify-content: center;
+}
+
+/* Hide overflow for coffee cup to contain the bubbles */
+.coffee {
+  overflow: hidden;
+  position: relative;
 }
 
 /* Statistik Visualisierungen */
@@ -302,6 +516,241 @@ body {
   height: 250px;
   margin-top: 20px;
   position: relative;
+}
+
+/* Kaffee Einträge Verwaltung */
+.entries-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Detaillierte Statistiken */
+.detailed-stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stats-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid var(--coffee-light);
+  padding-bottom: 10px;
+}
+
+.stats-tab-btn {
+  padding: 8px 15px;
+  background-color: var(--coffee-foam);
+  border: 1px solid var(--coffee-light);
+  border-radius: 5px;
+  font-weight: 500;
+  color: var(--coffee-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stats-tab-btn.active {
+  background-color: var(--coffee-medium);
+  color: var(--text-light);
+}
+
+.stats-tab-content {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stats-tab-content.active {
+  display: flex;
+}
+
+.stat-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.stat-summary-item {
+  background-color: var(--coffee-foam);
+  border-radius: 10px;
+  padding: 15px 10px;
+  text-align: center;
+}
+
+.summary-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--coffee-dark);
+}
+
+.summary-label {
+  font-size: 12px;
+  color: var(--coffee-medium);
+  margin-top: 5px;
+}
+
+.stat-details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.stat-details-item {
+  padding: 10px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--coffee-foam);
+  border-radius: 8px;
+}
+
+.details-label {
+  font-size: 12px;
+  color: var(--coffee-medium);
+  margin-bottom: 5px;
+}
+
+.details-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--coffee-dark);
+}
+
+.stat-divider {
+  height: 1px;
+  background-color: var(--coffee-light);
+  opacity: 0.3;
+  margin: 10px 0;
+}
+
+.stat-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--coffee-dark);
+  margin-bottom: 10px;
+}
+
+.month-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.month-select {
+  padding: 8px 12px;
+  border: 1px solid var(--coffee-light);
+  border-radius: 8px;
+  background-color: var(--coffee-foam);
+  color: var(--coffee-dark);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .stat-summary-grid,
+  .stat-details-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats-tabs {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* Kaffee Einträge Verwaltung */
+.entries-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.date-filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--coffee-light);
+  border-radius: 8px;
+  background-color: var(--coffee-foam);
+  color: var(--coffee-dark);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.entries-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--coffee-foam);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.coffee-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid var(--coffee-foam);
+  transition: background-color 0.2s ease;
+}
+
+.coffee-entry:last-child {
+  border-bottom: none;
+}
+
+.coffee-entry:hover {
+  background-color: var(--coffee-foam);
+}
+
+.entry-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.entry-date {
+  font-weight: 600;
+  color: var(--coffee-dark);
+}
+
+.entry-time {
+  font-size: 14px;
+  color: var(--coffee-medium);
+}
+
+.entry-interval {
+  font-size: 13px;
+  color: var(--coffee-medium);
+  font-style: italic;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.delete-entry-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+}
+
+.delete-entry-btn:hover {
+  background-color: #c0392b;
+}
+
+.no-entries-message {
+  padding: 20px;
+  text-align: center;
+  color: var(--coffee-medium);
+  font-style: italic;
 }
 
 /* Einstellungen */
