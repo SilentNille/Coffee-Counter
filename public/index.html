@@ -3,37 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Desktop App</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Kaffee Tracker</title>
+    <link rel="stylesheet" href="css/coffee-style.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js für die Statistiken -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Moment.js für Zeit-Formatierung -->
+    <script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
+    <!-- GSAP für Animationen -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap/dist/gsap.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Willkommen bei der Desktop App</h1>
-    </header>
-    
-    <main>
-        <section>
-            <h2>Über diese App</h2>
-            <p>Dies ist eine mit Electron erstellte Desktop-Anwendung, die auf Node.js und Express basiert.</p>
-        </section>
-        
-        <section>
-            <h2>Funktionen</h2>
-            <div class="button-container">
-                <button class="action-button" data-action="refresh">Status aktualisieren</button>
-                <button class="action-button" data-action="settings">Einstellungen</button>
+    <div class="app-container">
+        <!-- Benutzerdefinierte Titelleiste für frameless window -->
+        <div class="title-bar">
+            <div class="title-bar-left">
+                <i class="fas fa-coffee"></i>
+                <span class="title-bar-text">Kaffee Tracker</span>
             </div>
-        </section>
+            <div class="title-bar-controls">
+                <button class="title-bar-button minimize-button" id="minimize-btn"></button>
+                <button class="title-bar-button maximize-button" id="maximize-btn"></button>
+                <button class="title-bar-button close-button" id="close-btn"></button>
+            </div>
+        </div>
         
-        <section id="status-section">
-            <!-- Hier wird der API-Status angezeigt -->
-        </section>
-    </main>
+        <!-- Hauptinhalt -->
+        <div class="main-content">
+            <!-- Tracking-Karte -->
+            <div class="card tracking-card">
+                <div class="card-header">
+                    <i class="fas fa-stopwatch"></i>
+                    <h2 class="card-title">Kaffee Tracking</h2>
+                </div>
+                
+                <!-- Animierte Kaffeetasse -->
+                <div class="coffee-cup">
+                    <div class="cup">
+                        <div class="coffee">
+                            <div class="steam"></div>
+                            <div class="steam"></div>
+                            <div class="steam"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timer-Anzeige -->
+                <div class="timer-display" id="timer-display">00:00:00</div>
+                
+                <!-- Kaffee-Zähler -->
+                <div class="coffee-counter" id="coffee-counter">
+                    Heute: 0 Kaffees
+                </div>
+                
+                <!-- Start/Stop und Kaffee-Buttons -->
+                <div class="button-container mb-20">
+                    <button class="coffee-button" id="start-btn">
+                        <i class="fas fa-play"></i>
+                        Arbeitstag starten
+                    </button>
+                    <button class="coffee-button" id="coffee-btn" disabled>
+                        <i class="fas fa-mug-hot"></i>
+                        Kaffee gezählt!
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Statistik-Karte für den aktuellen Tag -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <h2 class="card-title">Heutige Statistik</h2>
+                </div>
+                
+                <!-- Statistik-Grid -->
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-avg-time">--:--</div>
+                        <div class="stat-label">Durchschnittliches Intervall</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-count">0</div>
+                        <div class="stat-label">Kaffees heute</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-min-time">--:--</div>
+                        <div class="stat-label">Kürzestes Intervall</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-max-time">--:--</div>
+                        <div class="stat-label">Längstes Intervall</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Grafische Statistik -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h2 class="card-title">Kaffee-Historie</h2>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="coffee-history-chart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Einstellungen -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cog"></i>
+                    <h2 class="card-title">Einstellungen</h2>
+                </div>
+                
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label class="form-label" for="coworker-name">Name des Kollegen</label>
+                        <input type="text" id="coworker-name" class="form-input" placeholder="Name eingeben">
+                    </div>
+                    
+                    <button class="coffee-button" id="save-settings-btn">
+                        <i class="fas fa-save"></i>
+                        Einstellungen speichern
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fußzeile -->
+        <div class="footer">
+            &copy; 2025 Kaffee Tracker
+        </div>
+    </div>
     
-    <footer>
-        <p>&copy; 2025 Test Desktop App</p>
-    </footer>
+    <!-- Toast-Benachrichtigung -->
+    <div class="toast" id="toast">Änderungen gespeichert!</div>
     
-    <script src="js/main.js"></script>
+    <!-- JavaScript -->
+    <script src="js/coffee-tracker.js"></script>
 </body>
 </html>

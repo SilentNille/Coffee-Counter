@@ -26,7 +26,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "chart.js": "4.4.9",
+    "express": "^4.18.2",
+    "gsap": "3.12.7",
+    "lowdb": "1.0.0",
+    "moment": "2.30.1"
   },
   "devDependencies": {
     "archiver": "7.0.1",
