@@ -1,0 +1,24 @@
+stages:
+  - install
+  - test
+  - build
+
+install_dependencies:
+  stage: install
+  script:
+    - npm install
+
+run_tests:
+  stage: test
+  script:
+    - npm test
+
+lint_code:
+  stage: test
+  script:
+    - npm run lint
+
+build_application:
+  stage: build
+  script:
+    - npm run build

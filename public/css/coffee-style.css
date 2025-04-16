@@ -110,14 +110,6 @@ body {
   transition: all 0.2s ease;
 }
 
-.minimize-button { background-color: #f1c40f; }
-.maximize-button { background-color: #2ecc71; }
-.close-button { background-color: #e74c3c; }
-
-.title-bar-button:hover {
-  filter: brightness(1.1);
-  transform: scale(1.1);
-}
 
 /* Hauptinhalt */
 .main-content {

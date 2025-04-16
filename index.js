@@ -9,6 +9,10 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const { app: electronApp } = require('electron');
+
+// Set the Dock icon for macOS
+electronApp.dock.setIcon(path.join(__dirname, 'public/assets/icons/coffee-icon.png'));
 
 // Konfiguration
 const PORT = process.env.PORT || 3000;
