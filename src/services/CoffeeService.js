@@ -1,10 +1,3 @@
-/**
- * CoffeeService.js
- * ---------------
- * Dieser Service verwaltet die Kaffee-Tracking-Daten.
- * Er nutzt lowdb für die lokale Datenspeicherung.
- */
-
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
@@ -13,11 +6,9 @@ const Coffee = require('../models/Coffee');
 
 class CoffeeService {
   constructor() {
-    // Pfad zur Datenbank-Datei bestimmen (im User-Datenverzeichnis)
     const userDataPath = app.getPath('userData');
     const dbPath = path.join(userDataPath, 'coffee-tracker-db.json');
     
-    // Datenbank initialisieren
     const adapter = new FileSync(dbPath);
     this.db = low(adapter);
     
@@ -302,7 +293,7 @@ class CoffeeService {
     if (todayCoffees.length === 0) return null;
     
     // Nach Zeitstempel sortieren und den neuesten zurückgeben
-    return todayCoffees.sort((a, b) => 
+    return todayCoffees.toSorted((a, b) => 
       new Date(b.timestamp) - new Date(a.timestamp)
     )[0];
   }

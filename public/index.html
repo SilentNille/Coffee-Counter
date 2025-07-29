@@ -5,18 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaffee Tracker</title>
     <link rel="stylesheet" href="css/coffee-style.css">
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js für die Statistiken -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Moment.js für Zeit-Formatierung -->
     <script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
-    <!-- GSAP für Animationen -->
     <script src="https://cdn.jsdelivr.net/npm/gsap/dist/gsap.min.js"></script>
 </head>
 <body>
     <div class="app-container">
-        <!-- Benutzerdefinierte Titelleiste für frameless window -->
         <div class="title-bar">
             <div class="title-bar-left">
                 <i class="fas fa-coffee"></i>
@@ -26,20 +21,16 @@
             </div>
         </div>
         
-        <!-- Hauptinhalt -->
         <div class="main-content">
-            <!-- Tracking-Karte -->
             <div class="card tracking-card">
                 <div class="card-header">
                     <i class="fas fa-stopwatch"></i>
                     <h2 class="card-title">Kaffee Tracking</h2>
                 </div>
                 
-                <!-- Animierte Kaffeetasse -->
                 <div class="coffee-cup">
                     <div class="cup">
                         <div class="coffee">
-                            <!-- Coffee bubbles will be added here by JavaScript -->
                             <div class="bubble"></div>
                             <div class="bubble"></div>
                             <div class="bubble"></div>
@@ -53,15 +44,12 @@
                     </div>
                 </div>
                 
-                <!-- Timer-Anzeige -->
                 <div class="timer-display" id="timer-display">00:00:00</div>
                 
-                <!-- Kaffee-Zähler -->
                 <div class="coffee-counter" id="coffee-counter">
                     Heute: 0 Kaffees
                 </div>
                 
-                <!-- Start/Stop und Kaffee-Buttons -->
                 <div class="button-container mb-20">
                     <button class="coffee-button" id="start-btn">
                         <i class="fas fa-play"></i>
@@ -74,14 +62,12 @@
                 </div>
             </div>
             
-            <!-- Statistik-Karte für den aktuellen Tag -->
             <div class="card">
                 <div class="card-header">
                     <i class="fas fa-chart-bar"></i>
                     <h2 class="card-title">Heutige Statistik</h2>
                 </div>
                 
-                <!-- Statistik-Grid -->
                 <div class="stat-grid">
                     <div class="stat-item">
                         <div class="stat-value" id="stat-avg-time">--:--</div>
@@ -102,7 +88,6 @@
                 </div>
             </div>
             
-            <!-- Grafische Statistik -->
             <div class="card">
                 <div class="card-header">
                     <i class="fas fa-chart-line"></i>
@@ -114,7 +99,6 @@
                 </div>
             </div>
             
-            <!-- Kaffee-Einträge Verwaltung -->
             <div class="card">
                 <div class="card-header">
                     <i class="fas fa-list"></i>
@@ -126,18 +110,15 @@
                         <label for="date-filter">Filter nach Datum:</label>
                         <select id="date-filter" class="date-filter-select">
                             <option value="all">Alle Einträge</option>
-                            <!-- Weitere Optionen werden per JavaScript gefüllt -->
                         </select>
                     </div>
                     
                     <div class="entries-list" id="coffee-entries-list">
-                        <!-- Einträge werden per JavaScript gefüllt -->
                         <div class="no-entries-message">Keine Kaffee-Einträge gefunden.</div>
                     </div>
                 </div>
             </div>
             
-            <!-- Detaillierte Statistik -->
             <div class="card">
                 <div class="card-header">
                     <i class="fas fa-chart-pie"></i>
@@ -145,13 +126,11 @@
                 </div>
                 
                 <div class="detailed-stats-container">
-                    <!-- Tabs für Navigierung zwischen Allzeit und Monat -->
                     <div class="stats-tabs">
                         <button class="stats-tab-btn active" data-tab="all-time">All-Time Statistik</button>
                         <button class="stats-tab-btn" data-tab="monthly">Monatliche Statistik</button>
                     </div>
                     
-                    <!-- All-Time Statistik -->
                     <div class="stats-tab-content active" id="all-time-stats">
                         <div class="stat-summary-grid">
                             <div class="stat-summary-item">
@@ -191,22 +170,18 @@
                             </div>
                         </div>
                         
-                        <!-- Trenner -->
                         <div class="stat-divider"></div>
                         
-                        <!-- Stundenverlauf-Chart -->
                         <h3 class="stat-section-title">Verteilung nach Tageszeit</h3>
                         <div class="chart-container">
                             <canvas id="hour-distribution-chart"></canvas>
                         </div>
                     </div>
                     
-                    <!-- Monatliche Statistik -->
                     <div class="stats-tab-content" id="monthly-stats">
                         <div class="month-selector">
                             <label for="month-select">Monat auswählen:</label>
                             <select id="month-select" class="month-select">
-                                <!-- Optionen werden per JavaScript gefüllt -->
                             </select>
                         </div>
                         
@@ -229,10 +204,8 @@
                             </div>
                         </div>
                         
-                        <!-- Trenner -->
                         <div class="stat-divider"></div>
                         
-                        <!-- Tagesverlauf-Chart -->
                         <h3 class="stat-section-title">Verteilung nach Tagen</h3>
                         <div class="chart-container">
                             <canvas id="day-distribution-chart"></canvas>
@@ -241,7 +214,6 @@
                 </div>
             </div>
             
-            <!-- Einstellungen -->
             <div class="card">
                 <div class="card-header">
                     <i class="fas fa-cog"></i>
@@ -262,17 +234,13 @@
             </div>
         </div>
         
-        <!-- Fußzeile -->
         <div class="footer">
             &copy; 2025 Kaffee Tracker
-            <!-- Dancing bean will be added here by JavaScript -->
         </div>
     </div>
     
-    <!-- Toast-Benachrichtigung -->
     <div class="toast" id="toast">Änderungen gespeichert!</div>
     
-    <!-- JavaScript -->
     <script src="js/coffee-tracker.js"></script>
 </body>
 </html>

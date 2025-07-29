@@ -1,15 +1,8 @@
-/**
- * electron.js
- * ----------
- * Hauptprozessdatei für die Coffee Tracker Electron-Anwendung
- */
-
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
 const CoffeeService = require('./src/services/CoffeeService');
 
-// Server starten
 require('./index');
 
 let mainWindow;
@@ -32,11 +25,11 @@ function createWindow() {
     frame: false, // Keine Standard-Fensterrahmen
     transparent: true, // Transparenz für abgerundete Ecken
     backgroundColor: '#00000000', // Transparent background
-    titleBarStyle: 'hidden',
+    // titleBarStyle: 'hidden',
     icon: path.join(__dirname, 'public', 'assets', 'icons', 'coffee-icon.png'),
     // Windows-spezifische Einstellungen für abgerundete Ecken
     ...(isWindows && {
-      autoHideMenuBar: true,
+      // autoHideMenuBar: true,
       roundedCorners: true
     })
   });

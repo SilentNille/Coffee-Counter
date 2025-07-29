@@ -1,36 +1,25 @@
-/**
- * package-app.js
- * -------------
- * Dieses Script erstellt eine einfache Windows-Distribution ohne Code-Signierung
- */
-
 const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
 const { execSync } = require('child_process');
 
-// Starten des Prozesses
 console.log('Starte manuelles Paketieren der Electron-App...');
 
-// Pfade konfigurieren
 const rootDir = __dirname;
 const distDir = path.join(rootDir, 'dist');
 const winAppDir = path.join(distDir, 'win-app');
 const electronVersion = require('./package.json').devDependencies.electron.replace('^', '');
 
-// Sicherstellen, dass die Ausgabeverzeichnisse existieren
 if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir);
 }
 
 if (fs.existsSync(winAppDir)) {
-  // Löschen des vorhandenen Verzeichnisses
   console.log('Lösche vorhandenes Ausgabeverzeichnis...');
   fs.rmSync(winAppDir, { recursive: true, force: true });
 }
 fs.mkdirSync(winAppDir);
 
-// Electron abrufen durch npm
 console.log('Installiere Electron-Binärdateien...');
 try {
   execSync('npx electron-download --version=' + electronVersion + ' --platform=win32 --arch=x64 --out=' + distDir);
@@ -40,7 +29,6 @@ try {
   process.exit(1);
 }
 
-// Extrahieren (falls es eine ZIP-Datei ist)
 const electronZip = path.join(distDir, 'electron-v' + electronVersion + '-win32-x64.zip');
 if (fs.existsSync(electronZip)) {
   console.log('Extrahiere Electron-Binärdateien...');
